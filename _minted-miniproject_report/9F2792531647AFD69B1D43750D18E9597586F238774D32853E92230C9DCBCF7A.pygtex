@@ -1,8 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{rcptr}\PYG{o}{\PYGZlt{}}\PYG{n}{Factor}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{q}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{queryLBP\PYGZus{}CG}\PYG{p}{(}\PYG{n}{cg}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{msgs}\PYG{p}{,}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{n}{X}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]\PYGZcb{})}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{normalize}\PYG{p}{();}
-\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{j}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{G}\PYG{p}{;}\PYG{+w}{ }\PYG{o}{++}\PYG{n}{j}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
-\PYG{+w}{  }\PYG{n}{rcptr}\PYG{o}{\PYGZlt{}}\PYG{n}{Factor}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{reduced}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{q}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{observeAndReduce}\PYG{p}{(\PYGZob{}}\PYG{n}{X}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]\PYGZcb{},}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{n}{T}\PYG{p}{(}\PYG{n}{j}\PYG{p}{)\PYGZcb{});}
-\PYG{+w}{  }\PYG{n}{gammas}\PYG{p}{[}\PYG{n}{t}\PYG{p}{][}\PYG{n}{j}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{reduced}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{potentialAt}\PYG{p}{(}
-\PYG{+w}{      }\PYG{n}{emdw}\PYG{o}{::}\PYG{n}{RVIds}\PYG{p}{\PYGZob{}\PYGZcb{},}\PYG{+w}{ }\PYG{n}{emdw}\PYG{o}{::}\PYG{n}{RVVals}\PYG{p}{\PYGZob{}\PYGZcb{},}\PYG{+w}{ }\PYG{n+nb}{true}\PYG{p}{);}
-\PYG{p}{\PYGZcb{}}
-\end{Verbatim}

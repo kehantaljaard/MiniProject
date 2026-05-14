@@ -61,6 +61,8 @@
   framesep=3pt,
   autogobble,
 }
+\renewcommand{\MintedPygmentize}{pygmentize -x}
+\newminted[cppd]{dracula_cpp_lexer.py:DraculaCppLexer}{}
 
 % --- Boxed equations for key formulas ---
 \newtcolorbox{formulabox}[1][]{
@@ -438,13 +440,13 @@ output directory, initial $(p_w, p_c)$, and an optional cluster-graph type
 Each $X_t$ is assigned a sequential integer identifier, and all $X_t$ share
 a single length-$G$ cell domain instantiated once:
 
-\begin{minted}{cpp}
+\begin{cppd}
 vector<RVIdType> X(lastT + 1);
 for (int t = 0; t <= lastT; ++t) X[t] = static_cast<RVIdType>(t);
 
 rcptr<vector<T>> cellDom(new vector<T>(G));
 for (int i = 0; i < G; ++i) (*cellDom)[i] = i;
-\end{minted}
+\end{cppd}
 
 \subsection{Building the factors}
 
@@ -452,11 +454,11 @@ for (int i = 0; i < G; ++i) (*cellDom)[i] = i;
 an empty sparse map with a default-entry probability of $1/G$, so every
 entry of the length-$G$ table is automatically $1/G$:
 
-\begin{minted}{cpp}
+\begin{cppd}
 map<vector<T>, FProb> emptyProbs;
 rcptr<Factor> prior = uniqptr<DT>(new DT(
     {X[0]}, {cellDom}, 1.0 / static_cast<double>(G), emptyProbs));
-\end{minted}
+\end{cppd}
 
 \paragraph{Transition factor.} The transition table is built by enumerating
 each source cell and accumulating $\tfrac{1}{4}$ of mass per direction into
@@ -464,7 +466,7 @@ the appropriate destination. Out-of-bounds moves are mapped back to the
 source cell by \texttt{clipMove}, which automatically generates the
 corner/edge self-loop mass without an explicit case split:
 
-\begin{minted}{cpp}
+\begin{cppd}
 auto clipMove = [W, H, &cellOf](int row, int col, int drow, int dcol) {
   int nr = row + drow, nc = col + dcol;
   if (nr < 0 || nr >= H) nr = row;
@@ -480,7 +482,7 @@ for (int i = 0; i < G; ++i) {
     transProbs[{T(i), T(j)}].prob += 0.25;
   }
 }
-\end{minted}
+\end{cppd}
 
 \noindent The sparse map is built once and reused across all $T$ transition
 factor instantiations, exploiting the time-homogeneity of the dynamics.
@@ -489,7 +491,7 @@ factor instantiations, exploiting the time-homogeneity of the dynamics.
 $\phi_{\text{on}} = p_w/p_c$ or $\phi_{\text{off}} = (1{-}p_w)/(1{-}p_c)$
 per cell, determined by the detection grid at time $t$:
 
-\begin{minted}{cpp}
+\begin{cppd}
 const double phiOn  = cfg.pw / cfg.pc;
 const double phiOff = (1.0 - cfg.pw) / (1.0 - cfg.pc);
 
@@ -505,7 +507,7 @@ for (int t = 0; t <= lastT; ++t) {
       {X[t]}, {cellDom}, defProb, phiProbs));
   factors.push_back(phi);
 }
-\end{minted}
+\end{cppd}
 
 \subsection{Cluster graph and BP}
 
@@ -513,7 +515,7 @@ The cluster-graph construction algorithm is selectable at runtime, enabling
 the \texttt{LTRIP}/\texttt{JTREE} comparison reported in
 Section~\ref{sec:results}:
 
-\begin{minted}{cpp}
+\begin{cppd}
 map<RVIdType, AnyType> obsv;  // evidence baked into phi_t; no RV-level obs
 if (cfg.cgType == "JTREE")
   cgPtr = new ClusterGraph(ClusterGraph::JTREE, factors, obsv);
@@ -524,7 +526,7 @@ else
 
 map<Idx2, rcptr<Factor>> msgs;  MessageQueue msgQ;
 unsigned nMsgs = loopyBP_CG(*cgPtr, msgs, msgQ);
-\end{minted}
+\end{cppd}
 
 \subsection{Extracting marginals and the EM loop}
 
@@ -532,21 +534,21 @@ For each $t$ the smoothed marginal $\gamma_t$ is obtained by querying the
 cluster graph for the posterior over $X_t$ and reducing to each cell value
 in turn:
 
-\begin{minted}{cpp}
+\begin{cppd}
 rcptr<Factor> q = queryLBP_CG(cg, msgs, {X[t]})->normalize();
 for (int j = 0; j < G; ++j) {
   rcptr<Factor> reduced = q->observeAndReduce({X[t]}, {T(j)});
   gammas[t][j] = reduced->potentialAt(
       emdw::RVIds{}, emdw::RVVals{}, true);
 }
-\end{minted}
+\end{cppd}
 
 \noindent In \texttt{miniproject\_q3.cc} the same E-step logic is wrapped in
 an outer EM loop. After each E-step the soft sufficient statistics
 $A_t$ are computed directly from \texttt{gammas[t][j]} and the detection
 grid, and the M-step updates $(p_w, p_c)$ per Equation~(\ref{eq:mstep}):
 
-\begin{minted}{cpp}
+\begin{cppd}
 double sumA = 0.0, sumDminusA = 0.0;
 for (int t = 0; t <= lastT; ++t) {
   double At = 0.0;
@@ -563,7 +565,7 @@ double newPc = sumDminusA
               * static_cast<double>(G - 1));
 newPw = clamp(newPw, PARAM_EPS, 1.0 - PARAM_EPS);
 newPc = clamp(newPc, PARAM_EPS, 1.0 - PARAM_EPS);
-\end{minted}
+\end{cppd}
 
 \subsection{Output}
 

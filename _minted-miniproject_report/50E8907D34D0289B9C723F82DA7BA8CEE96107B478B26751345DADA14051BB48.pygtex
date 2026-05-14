@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{RVIdType}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{X}\PYG{p}{(}\PYG{n}{lastT}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{);}
+\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{t}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{t}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{lastT}\PYG{p}{;}\PYG{+w}{ }\PYG{o}{++}\PYG{n}{t}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{X}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{k}{static\PYGZus{}cast}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{RVIdType}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{t}\PYG{p}{);}
+
+\PYG{k+kt}{rcptr}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{T}\PYG{o}{\PYGZgt{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{cellDom}\PYG{p}{(}\PYG{k}{new}\PYG{+w}{ }\PYG{k+kt}{vector}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{T}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{G}\PYG{p}{));}
+\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{int}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{n}{i}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{G}\PYG{p}{;}\PYG{+w}{ }\PYG{o}{++}\PYG{n}{i}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{(}\PYG{o}{*}\PYG{n}{cellDom}\PYG{p}{)[}\PYG{n}{i}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{i}\PYG{p}{;}
+\end{Verbatim}

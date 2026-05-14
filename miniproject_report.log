@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.17.0 (TeX Live 2023/Debian)  (format=lualatex 2025.3.19)  14 MAY 2026 22:18
+This is LuaHBTeX, Version 1.17.0 (TeX Live 2023/Debian)  (format=lualatex 2025.3.19)  14 MAY 2026 22:28
  system commands enabled.
 **miniproject_report.tex
 (./miniproject_report.tex
@@ -1056,38 +1056,38 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip64
 )
-runsystem(command -v pygmentize && touch miniproject_report.aex)...executed.
+runsystem(command -v pygmentize -x && touch miniproject_report.aex)...executed.
 runsystem(rm miniproject_report.aex)...executed.
 
 (./miniproject_report.aux)
 \openout1 = miniproject_report.aux
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 83.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 85.
 LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 8
-3.
+5.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 83.
-LaTeX Font Info:    ... okay on input line 83.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 85.
+LaTeX Font Info:    ... okay on input line 85.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: luatex
@@ -1145,19 +1145,19 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Info: Redefining \microtypecontext on input line 83.
-Package microtype Info: Applying patch `item' on input line 83.
-Package microtype Info: Applying patch `toc' on input line 83.
-Package microtype Info: Applying patch `eqnum' on input line 83.
-Package microtype Info: Applying patch `footnote' on input line 83.
-Package microtype Info: Applying patch `verbatim' on input line 83.
+LaTeX Info: Redefining \microtypecontext on input line 85.
+Package microtype Info: Applying patch `item' on input line 85.
+Package microtype Info: Applying patch `toc' on input line 85.
+Package microtype Info: Applying patch `eqnum' on input line 85.
+Package microtype Info: Applying patch `footnote' on input line 85.
+Package microtype Info: Applying patch `verbatim' on input line 85.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 83.
+LaTeX Info: Redefining \showhyphens on input line 85.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of spacing.
 Package microtype Info: No adjustment of kerning.
@@ -1172,68 +1172,68 @@ Package fontspec Info: Adjusting the maths setup (use [no-math] to avoid
 
 \symlegacymaths=\mathgroup9
 LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
-(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 83.
-LaTeX Font Info:    Redeclaring math accent \acute on input line 83.
-LaTeX Font Info:    Redeclaring math accent \grave on input line 83.
-LaTeX Font Info:    Redeclaring math accent \ddot on input line 83.
-LaTeX Font Info:    Redeclaring math accent \tilde on input line 83.
-LaTeX Font Info:    Redeclaring math accent \bar on input line 83.
-LaTeX Font Info:    Redeclaring math accent \breve on input line 83.
-LaTeX Font Info:    Redeclaring math accent \check on input line 83.
-LaTeX Font Info:    Redeclaring math accent \hat on input line 83.
-LaTeX Font Info:    Redeclaring math accent \dot on input line 83.
-LaTeX Font Info:    Redeclaring math accent \mathring on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Delta on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Theta on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Xi on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Pi on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Phi on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Psi on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \Omega on input line 83.
-LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 83.
-LaTeX Font Info:    Redeclaring symbol font `operators' on input line 83.
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 85.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 85.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 85.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 85.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 85.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 85.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 85.
+LaTeX Font Info:    Redeclaring math accent \check on input line 85.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 85.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 85.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 85.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 85.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 85.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 85.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 85.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 85.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 85.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 85.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 85.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 85.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 85.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 85.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 85.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 85.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 83.
+(Font)              `operators' in the math version `normal' on input line 85.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> TU/lmr/m/n on input line 83.
+(Font)                  OT1/cmr/m/n --> TU/lmr/m/n on input line 85.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 83.
+(Font)              `operators' in the math version `bold' on input line 85.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> TU/lmr/m/n on input line 83.
+(Font)                  OT1/cmr/bx/n --> TU/lmr/m/n on input line 85.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  TU/lmr/m/n --> TU/lmr/m/n on input line 83.
+(Font)                  TU/lmr/m/n --> TU/lmr/m/n on input line 85.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> TU/lmr/m/it on input line 83.
+(Font)                  OT1/cmr/m/it --> TU/lmr/m/it on input line 85.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> TU/lmr/b/n on input line 83.
+(Font)                  OT1/cmr/bx/n --> TU/lmr/b/n on input line 85.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 83.
+(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 85.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
 (Font)                  OT1/cmtt/m/n --> TU/JetBrainsMonoNerdFont(0)/m/n on inp
-ut line 83.
+ut line 85.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  TU/lmr/m/n --> TU/lmr/b/n on input line 83.
+(Font)                  TU/lmr/m/n --> TU/lmr/b/n on input line 85.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> TU/lmr/b/it on input line 83.
+(Font)                  OT1/cmr/bx/it --> TU/lmr/b/it on input line 85.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> TU/lmss/b/n on input line 83.
+(Font)                  OT1/cmss/bx/n --> TU/lmss/b/n on input line 85.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 (Font)                  OT1/cmtt/m/n --> TU/JetBrainsMonoNerdFont(0)/b/n on inp
-ut line 83.
+ut line 85.
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring ON on input line 83.
+Package hyperref Info: Link coloring ON on input line 85.
 
 (./miniproject_report.out) (./miniproject_report.out)
 \@outlinefile=\write6
 
 \openout6 = miniproject_report.out
-LaTeX Font Info:    Trying to load font information for U+msa on input line 85.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 87.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -1242,7 +1242,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 85.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 87.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1256,7 +1256,7 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 (RS)
 )
 LaTeX Font Info:    Font shape `TU/JetBrainsMonoNerdFont(0)/m/n' will be
-(Font)              scaled to size 8.58075pt on input line 140.
+(Font)              scaled to size 8.58075pt on input line 142.
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `JetBrainsMonoNerdFont' (encoding: TU).
 (microtype)             For optimal results, create family-specific settings.
@@ -1266,192 +1266,192 @@ Package microtype Info: Loading generic protrusion settings for font family
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 349.
+(hyperref)                removing `math shift' on input line 351.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 349.
+(hyperref)                removing `subscript' on input line 351.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 349.
+(hyperref)                removing `subscript' on input line 351.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 349.
+(hyperref)                removing `math shift' on input line 351.
 
 [4]
 \openout4 = miniproject_report.pyg
  (./_minted-miniproject_report/dracula.pygstyle)
-(./_minted-miniproject_report/50E8907D34D0289B9C723F82DA7BA8CE7586F238774D32853
-E92230C9DCBCF7A.pygtex
+(./_minted-miniproject_report/50E8907D34D0289B9C723F82DA7BA8CEE96107B478B267513
+45DADA14051BB48.pygtex
 LaTeX Font Info:    Font shape `TU/JetBrainsMonoNerdFont(0)/m/n' will be
 (Font)              scaled to size 7.05267pt on input line 1.
 )
 \openout4 = miniproject_report.pyg
 
-(./_minted-miniproject_report/46C697078C62A0BC73887F203F4AF4D47586F238774D32853
-E92230C9DCBCF7A.pygtex)
+(./_minted-miniproject_report/46C697078C62A0BC73887F203F4AF4D4E96107B478B267513
+45DADA14051BB48.pygtex)
 \openout4 = miniproject_report.pyg
 
-(./_minted-miniproject_report/9E3377CC091B4956B95DF3A7951FB3AA7586F238774D32853
-E92230C9DCBCF7A.pygtex) [5]
+(./_minted-miniproject_report/9E3377CC091B4956B95DF3A7951FB3AAE96107B478B267513
+45DADA14051BB48.pygtex) [5]
 \openout4 = miniproject_report.pyg
 
-(./_minted-miniproject_report/53580EC45B6A1CC7DB208AF4C1C9A72D7586F238774D32853
-E92230C9DCBCF7A.pygtex)
+(./_minted-miniproject_report/53580EC45B6A1CC7DB208AF4C1C9A72DE96107B478B267513
+45DADA14051BB48.pygtex)
 \openout4 = miniproject_report.pyg
 
-(./_minted-miniproject_report/EA6716B269BC247AEDF97B51AD464F0B7586F238774D32853
-E92230C9DCBCF7A.pygtex)
+(./_minted-miniproject_report/EA6716B269BC247AEDF97B51AD464F0BE96107B478B267513
+45DADA14051BB48.pygtex)
 \openout4 = miniproject_report.pyg
 
-(./_minted-miniproject_report/9F2792531647AFD69B1D43750D18E9597586F238774D32853
-E92230C9DCBCF7A.pygtex
+(./_minted-miniproject_report/9F2792531647AFD69B1D43750D18E959E96107B478B267513
+45DADA14051BB48.pygtex
 LaTeX Font Info:    Font shape `TU/JetBrainsMonoNerdFont(0)/m/it' will be
 (Font)              scaled to size 7.05267pt on input line 6.
 )
 \openout4 = miniproject_report.pyg
  [6]
-(./_minted-miniproject_report/B8C0B77F078B12AB9C0FAD8863811F627586F238774D32853
-E92230C9DCBCF7A.pygtex)
+(./_minted-miniproject_report/B8C0B77F078B12AB9C0FAD8863811F62E96107B478B267513
+45DADA14051BB48.pygtex)
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 596.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                \kern 1.82538pt
-(hyperref)                removed on input line 596.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 596.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\times' on input line 596.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 596.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 596.
+(hyperref)                removing `\leavevmode@ifvmode' on input line 598.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                \kern 1.82538pt
-(hyperref)                removed on input line 596.
+(hyperref)                removed on input line 598.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 596.
+(hyperref)                removing `math shift' on input line 598.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 596.
+(hyperref)                removing `\times' on input line 598.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 596.
+(hyperref)                removing `math shift' on input line 598.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 596.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 596.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 596.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 609.
+(hyperref)                removing `\leavevmode@ifvmode' on input line 598.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                \kern 1.82538pt
-(hyperref)                removed on input line 609.
+(hyperref)                removed on input line 598.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 609.
+(hyperref)                removing `math shift' on input line 598.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\times' on input line 609.
+(hyperref)                removing `subscript' on input line 598.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 609.
+(hyperref)                removing `math shift' on input line 598.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 609.
+(hyperref)                removing `math shift' on input line 598.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                \kern 1.82538pt
-(hyperref)                removed on input line 609.
+(hyperref)                removing `subscript' on input line 598.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 609.
+(hyperref)                removing `math shift' on input line 598.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 609.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 609.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 609.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 609.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 609.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 614.
+(hyperref)                removing `\leavevmode@ifvmode' on input line 611.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                \kern 1.82538pt
-(hyperref)                removed on input line 614.
+(hyperref)                removed on input line 611.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 614.
+(hyperref)                removing `math shift' on input line 611.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\times' on input line 614.
+(hyperref)                removing `\times' on input line 611.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 614.
+(hyperref)                removing `math shift' on input line 611.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\leavevmode@ifvmode' on input line 614.
+(hyperref)                removing `\leavevmode@ifvmode' on input line 611.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                \kern 1.82538pt
-(hyperref)                removed on input line 614.
+(hyperref)                removed on input line 611.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 611.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 611.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 611.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 611.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `subscript' on input line 611.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 611.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\leavevmode@ifvmode' on input line 616.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                \kern 1.82538pt
+(hyperref)                removed on input line 616.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 616.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\times' on input line 616.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 616.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\leavevmode@ifvmode' on input line 616.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                \kern 1.82538pt
+(hyperref)                removed on input line 616.
 
 [7] [8] (./miniproject_report.aux)
  ***********
@@ -1464,13 +1464,13 @@ runsystem(rm miniproject_report.pyg)...executed.
 )
 
 Here is how much of LuaTeX's memory you used:
- 35533 strings out of 476553
+ 35539 strings out of 476553
  125240,1977958 words of node,token memory allocated
  698 words of node memory still in use:
    7 hlist, 2 vlist, 2 rule, 1 local_par, 4 glue, 6 kern, 1 penalty, 1 margin_ke
 rn, 4 glyph, 32 attribute, 60 glue_spec, 32 attribute_list, 2 write nodes
    avail lists: 2:2664,3:822,4:1926,5:505,6:82,7:9478,8:66,9:796,10:14,11:816
- 56604 multiletter control sequences out of 65536+600000
+ 56610 multiletter control sequences out of 65536+600000
  112 fonts using 16469887 bytes
  102i,12n,119p,1014b,1025s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </home/kehantaljaard/.local/share/fonts/JetBrains Mono Italic Nerd Font Complete
@@ -1496,7 +1496,7 @@ onts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type
 c/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
 ts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbo
 ls/msbm10.pfb>
-Output written on miniproject_report.pdf (8 pages, 229102 bytes).
+Output written on miniproject_report.pdf (8 pages, 229150 bytes).
 
 PDF statistics: 316 PDF objects out of 1000 (max. 8388607)
  258 compressed objects within 3 object streams

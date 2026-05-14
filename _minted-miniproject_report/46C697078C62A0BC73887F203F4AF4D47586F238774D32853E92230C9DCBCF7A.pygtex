@@ -1,5 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n}{map}\PYG{o}{\PYGZlt{}}\PYG{n}{vector}\PYG{o}{\PYGZlt{}}\PYG{n}{T}\PYG{o}{\PYGZgt{}}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{FProb}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{emptyProbs}\PYG{p}{;}
-\PYG{n}{rcptr}\PYG{o}{\PYGZlt{}}\PYG{n}{Factor}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{prior}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{uniqptr}\PYG{o}{\PYGZlt{}}\PYG{n}{DT}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{k}{new}\PYG{+w}{ }\PYG{n}{DT}\PYG{p}{(}
-\PYG{+w}{    }\PYG{p}{\PYGZob{}}\PYG{n}{X}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]\PYGZcb{},}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{n}{cellDom}\PYG{p}{\PYGZcb{},}\PYG{+w}{ }\PYG{l+m+mf}{1.0}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{k}{static\PYGZus{}cast}\PYG{o}{\PYGZlt{}}\PYG{k+kt}{double}\PYG{o}{\PYGZgt{}}\PYG{p}{(}\PYG{n}{G}\PYG{p}{),}\PYG{+w}{ }\PYG{n}{emptyProbs}\PYG{p}{));}
-\end{Verbatim}
