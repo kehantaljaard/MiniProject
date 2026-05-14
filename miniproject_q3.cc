@@ -140,7 +140,7 @@ int main(int argc, char *argv[]) {
     //*********************************************************
 
     // Prior P(X_0)
-    map<vector<T>,  I> emptyProbs;
+    map<vector<T>, FProb> emptyProbs;
     rcptr<Factor> prior = uniqptr<DT> (new DT({X[0]}, {cellDom}, 1.0 / static_cast<double>(G), emptyProbs));   
       
     // Transition factor sparse map

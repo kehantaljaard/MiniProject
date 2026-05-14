@@ -9,9 +9,11 @@
 \usepackage{enumitem}
 \usepackage{microtype}
 \usepackage{xcolor}
-\usepackage{listings}
+\usepackage{fontspec}
+\setmonofont{JetBrainsMono Nerd Font}[Scale=MatchLowercase]
+\usepackage[newfloat]{minted}
 \usepackage{tcolorbox}
-\tcbuselibrary{breakable, listings, skins}
+\tcbuselibrary{breakable, skins}
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
@@ -25,25 +27,39 @@
 \newcommand{\Ind}{\mathbb{I}}
 \newcommand{\states}{\mathcal{X}}
 \newcommand{\bd}{\mathbf{d}}
- \newcommand{\cind}{\perp\!\!\!\perp} 
+\newcommand{\cind}{\perp\!\!\!\perp} 
+
+\newcommand*\circled[3]{%
+\tikz[
+    baseline=(char.base),
+    scale=#3,
+    transform shape
+]{
+    \node[
+        shape=circle,
+        draw=blue!60!black,
+        fill=blue!10,
+        line width=0.5pt,
+        inner sep=0.01pt,
+        minimum size=2.0ex
+    ] (char) {\strut\raisebox{#2}{#1}};
+}}
+
 \DeclareMathOperator{\Move}{move}
 \DeclareMathOperator*{\argmax}{arg\,max}
 
-% --- C++ code listing style ---
-\lstdefinestyle{cpp}{
-  language=C++,
-  basicstyle=\ttfamily\footnotesize,
-  keywordstyle=\color{blue!60!black},
-  commentstyle=\color{green!50!black}\itshape,
-  stringstyle=\color{red!50!black},
-  numbers=none,
-  showstringspaces=false,
+% --- C++ code listing style (minted + Dracula) ---
+\definecolor{draculaBg}{HTML}{282A36}
+\setminted{
+  style=dracula,
+  bgcolor=draculaBg,
+  fontsize=\footnotesize,
   breaklines=true,
-  frame=single,
-  framesep=3pt,
-  rulecolor=\color{gray!50},
+  breakanywhere=true,
   tabsize=2,
-  aboveskip=4pt, belowskip=4pt,
+  frame=none,
+  framesep=3pt,
+  autogobble,
 }
 
 % --- Boxed equations for key formulas ---
@@ -253,21 +269,47 @@ sparse table is built at the beginning and used for every transition.
 
 Because every detection $D_t^{(i)}$ is observed, the $(T{+}1) G$ emission
 factors can be folded into one unary factor per time step on $X_t$, removing
-the detection RVs from the inference-time graph entirely. Conditional on
-$X_t = x^\star$, the joint emission likelihood at time $t$ is
-\begin{align*}
+the detection RVs from the graph entirely. \\[8pt]
+\noindent By the conditional independence of detections given the wumpus position
+(Section~\ref{sec:bn}), the joint emission likelihood at time $t$
+factorises as:
+\begin{equation*}
 p(\bd_t \given X_t = x^\star)
-&= p_w^{d_t^{(x^\star)}} (1{-}p_w)^{1-d_t^{(x^\star)}}
-   \cdot \prod_{i \neq x^\star} p_c^{d_t^{(i)}} (1{-}p_c)^{1-d_t^{(i)}} \\
-&= \underbrace{\Bigl[\textstyle\prod_{i} p_c^{d_t^{(i)}}
+= \prod_{i=0}^{G-1} p\!\bigl(D_t^{(i)} = d_t^{(i)} \given X_t = x^\star\bigr),
+\end{equation*}
+and each per-cell likelihood depends only on whether cell $i$ contains the
+wumpus:
+\begin{equation*}
+p\!\bigl(D_t^{(i)} = d_t^{(i)} \given X_t = x^\star\bigr) =
+\begin{cases}
+p_w^{d_t^{(i)}} (1{-}p_w)^{1-d_t^{(i)}} & i = x^\star, \\
+p_c^{d_t^{(i)}} (1{-}p_c)^{1-d_t^{(i)}} & i \neq x^\star.
+\end{cases}
+\end{equation*}
+Next, we can factor out the $i \neq x^\star$ terms, which do not depend on $x^\star$ and so:
+\begin{equation*}
+p(\bd_t \given X_t = x^\star)
+= p_w^{d_t^{(x^\star)}} (1{-}p_w)^{1-d_t^{(x^\star)}}
+   \cdot \overbrace{\prod_{i \neq x^\star} p_c^{d_t^{(i)}} (1{-}p_c)^{1-d_t^{(i)}}}^{ \circled{1}{-0.5pt}{0.7} } \\
+\end{equation*}
+
+Where $\circled{1}{-0.5pt}{0.7}$ is expanded to the following to enable removal of terms independent of $x^\star$:
+\[
+\frac{\prod_{i =0}^{G-1} p_c^{d_t^{(i)}} (1{-}p_c)^{1-d_t^{(i)}}}{p_c^{d_t^{(x^\star)}} (1{-}p_c)^{1-d_t^{(x^\star)}}}
+\]
+Now: 
+\begin{equation*}
+p(\bd_t \given X_t = x^\star) = \underbrace{\Bigl[\textstyle\prod_{i=0}^{G-1} p_c^{d_t^{(i)}}
    (1{-}p_c)^{1-d_t^{(i)}}\Bigr]}_{C_t,\;\text{independent of}\;x^\star}
 \;\cdot\;
 \frac{p_w^{d_t^{(x^\star)}} (1{-}p_w)^{1-d_t^{(x^\star)}}}
      {p_c^{d_t^{(x^\star)}} (1{-}p_c)^{1-d_t^{(x^\star)}}}.
-\end{align*}
+\end{equation*}
+
+
+
 $C_t$ does not depend on $x^\star$ and cancels in any posterior over $X_t$.
-We define the unary observation factor
-\begin{formulabox}[Collapsed observation factor]
+We define the unary observation factor:
 \[
 \phi_t(X_t = x^\star) \;\propto\;
 \begin{cases}
@@ -276,7 +318,7 @@ p_w / p_c              & d_t^{(x^\star)} = 1, \\
 \end{cases}
 \]
 \label{eq:phi}
-\end{formulabox}
+
 
 \noindent This is a length-$G$ table per time step with two distinct values.
 The $G(T{+}1)$ binary detection RVs are absent from the graph used for
@@ -396,13 +438,13 @@ output directory, initial $(p_w, p_c)$, and an optional cluster-graph type
 Each $X_t$ is assigned a sequential integer identifier, and all $X_t$ share
 a single length-$G$ cell domain instantiated once:
 
-\begin{lstlisting}[style=cpp]
+\begin{minted}{cpp}
 vector<RVIdType> X(lastT + 1);
 for (int t = 0; t <= lastT; ++t) X[t] = static_cast<RVIdType>(t);
 
 rcptr<vector<T>> cellDom(new vector<T>(G));
 for (int i = 0; i < G; ++i) (*cellDom)[i] = i;
-\end{lstlisting}
+\end{minted}
 
 \subsection{Building the factors}
 
@@ -410,11 +452,11 @@ for (int i = 0; i < G; ++i) (*cellDom)[i] = i;
 an empty sparse map with a default-entry probability of $1/G$, so every
 entry of the length-$G$ table is automatically $1/G$:
 
-\begin{lstlisting}[style=cpp]
+\begin{minted}{cpp}
 map<vector<T>, FProb> emptyProbs;
 rcptr<Factor> prior = uniqptr<DT>(new DT(
     {X[0]}, {cellDom}, 1.0 / static_cast<double>(G), emptyProbs));
-\end{lstlisting}
+\end{minted}
 
 \paragraph{Transition factor.} The transition table is built by enumerating
 each source cell and accumulating $\tfrac{1}{4}$ of mass per direction into
@@ -422,7 +464,7 @@ the appropriate destination. Out-of-bounds moves are mapped back to the
 source cell by \texttt{clipMove}, which automatically generates the
 corner/edge self-loop mass without an explicit case split:
 
-\begin{lstlisting}[style=cpp]
+\begin{minted}{cpp}
 auto clipMove = [W, H, &cellOf](int row, int col, int drow, int dcol) {
   int nr = row + drow, nc = col + dcol;
   if (nr < 0 || nr >= H) nr = row;
@@ -438,7 +480,7 @@ for (int i = 0; i < G; ++i) {
     transProbs[{T(i), T(j)}].prob += 0.25;
   }
 }
-\end{lstlisting}
+\end{minted}
 
 \noindent The sparse map is built once and reused across all $T$ transition
 factor instantiations, exploiting the time-homogeneity of the dynamics.
@@ -447,7 +489,7 @@ factor instantiations, exploiting the time-homogeneity of the dynamics.
 $\phi_{\text{on}} = p_w/p_c$ or $\phi_{\text{off}} = (1{-}p_w)/(1{-}p_c)$
 per cell, determined by the detection grid at time $t$:
 
-\begin{lstlisting}[style=cpp]
+\begin{minted}{cpp}
 const double phiOn  = cfg.pw / cfg.pc;
 const double phiOff = (1.0 - cfg.pw) / (1.0 - cfg.pc);
 
@@ -463,7 +505,7 @@ for (int t = 0; t <= lastT; ++t) {
       {X[t]}, {cellDom}, defProb, phiProbs));
   factors.push_back(phi);
 }
-\end{lstlisting}
+\end{minted}
 
 \subsection{Cluster graph and BP}
 
@@ -471,7 +513,7 @@ The cluster-graph construction algorithm is selectable at runtime, enabling
 the \texttt{LTRIP}/\texttt{JTREE} comparison reported in
 Section~\ref{sec:results}:
 
-\begin{lstlisting}[style=cpp]
+\begin{minted}{cpp}
 map<RVIdType, AnyType> obsv;  // evidence baked into phi_t; no RV-level obs
 if (cfg.cgType == "JTREE")
   cgPtr = new ClusterGraph(ClusterGraph::JTREE, factors, obsv);
@@ -482,7 +524,7 @@ else
 
 map<Idx2, rcptr<Factor>> msgs;  MessageQueue msgQ;
 unsigned nMsgs = loopyBP_CG(*cgPtr, msgs, msgQ);
-\end{lstlisting}
+\end{minted}
 
 \subsection{Extracting marginals and the EM loop}
 
@@ -490,21 +532,21 @@ For each $t$ the smoothed marginal $\gamma_t$ is obtained by querying the
 cluster graph for the posterior over $X_t$ and reducing to each cell value
 in turn:
 
-\begin{lstlisting}[style=cpp]
+\begin{minted}{cpp}
 rcptr<Factor> q = queryLBP_CG(cg, msgs, {X[t]})->normalize();
 for (int j = 0; j < G; ++j) {
   rcptr<Factor> reduced = q->observeAndReduce({X[t]}, {T(j)});
   gammas[t][j] = reduced->potentialAt(
       emdw::RVIds{}, emdw::RVVals{}, true);
 }
-\end{lstlisting}
+\end{minted}
 
 \noindent In \texttt{miniproject\_q3.cc} the same E-step logic is wrapped in
 an outer EM loop. After each E-step the soft sufficient statistics
 $A_t$ are computed directly from \texttt{gammas[t][j]} and the detection
 grid, and the M-step updates $(p_w, p_c)$ per Equation~(\ref{eq:mstep}):
 
-\begin{lstlisting}[style=cpp]
+\begin{minted}{cpp}
 double sumA = 0.0, sumDminusA = 0.0;
 for (int t = 0; t <= lastT; ++t) {
   double At = 0.0;
@@ -521,7 +563,7 @@ double newPc = sumDminusA
               * static_cast<double>(G - 1));
 newPw = clamp(newPw, PARAM_EPS, 1.0 - PARAM_EPS);
 newPc = clamp(newPc, PARAM_EPS, 1.0 - PARAM_EPS);
-\end{lstlisting}
+\end{minted}
 
 \subsection{Output}
 
