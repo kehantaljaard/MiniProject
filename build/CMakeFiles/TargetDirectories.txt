@@ -1,0 +1,4 @@
+/home/kehantaljaard/Desktop/SUN/DE424/MiniProject/build/CMakeFiles/miniproject.dir
+/home/kehantaljaard/Desktop/SUN/DE424/MiniProject/build/CMakeFiles/miniproject_q3.dir
+/home/kehantaljaard/Desktop/SUN/DE424/MiniProject/build/CMakeFiles/edit_cache.dir
+/home/kehantaljaard/Desktop/SUN/DE424/MiniProject/build/CMakeFiles/rebuild_cache.dir
