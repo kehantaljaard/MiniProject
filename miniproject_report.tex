@@ -177,7 +177,7 @@ $D_t^{(i)} \in \{0,1\}$ & detection RV at cell $i$ at time $t$ \\
 $d_t^{(i)} \in \{0,1\}$ & observed value of $D_t^{(i)}$ \\
 $\bd_t$                 & full detection grid at time $t$ \\
 $p_w, p_c$              & detection probabilities (wumpus cell / other cells) \\
-$\gamma_t(x)$           & posterior $P(X_t = x \given \bd_{0:T})$ \\
+$\gamma_t(x)$           & smoothed posterior $P(X_t = x \given \bd_{0:T})$ \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -277,12 +277,12 @@ the detection RVs from the graph entirely. \\[8pt]
 factorises as:
 \begin{equation*}
 p(\bd_t \given X_t = x^\star)
-= \prod_{i=0}^{G-1} p\!\bigl(D_t^{(i)} = d_t^{(i)} \given X_t = x^\star\bigr),
+= \prod_{i=0}^{G-1} p \bigl(D_t^{(i)} = d_t^{(i)} \given X_t = x^\star\bigr),
 \end{equation*}
 and each per-cell likelihood depends only on whether cell $i$ contains the
 wumpus:
 \begin{equation*}
-p\!\bigl(D_t^{(i)} = d_t^{(i)} \given X_t = x^\star\bigr) =
+p \bigl(D_t^{(i)} = d_t^{(i)} \given X_t = x^\star\bigr) =
 \begin{cases}
 p_w^{d_t^{(i)}} (1{-}p_w)^{1-d_t^{(i)}} & i = x^\star, \\
 p_c^{d_t^{(i)}} (1{-}p_c)^{1-d_t^{(i)}} & i \neq x^\star.
@@ -322,61 +322,55 @@ p_w / p_c              & d_t^{(x^\star)} = 1, \\
 \label{eq:phi}
 
 
-\noindent This is a length-$G$ table per time step with two distinct values.
+\noindent This is a length-$G$ table per time step.
 The $G(T{+}1)$ binary detection RVs are absent from the graph used for
-inference, which becomes a chain of $T{+}1$ unobserved variables with one unary
-evidence factor per step --- a factor of $G$ smaller than the naive
-representation. The brief explicitly recommends exploiting always-observed
-RVs in this way.
+inference, which becomes $T{+}1$ unobserved variables with one unary
+evidence factor per step, a factor of $G$ times smaller than the naive
+representation. 
 
 \subsection{Cluster graph and inference algorithm}
 
 The factor list (one prior, $T$ transition factors, $T{+}1$ collapsed
 observation factors) is handed to \texttt{emdw}'s \texttt{ClusterGraph}
-constructor with either the \texttt{LTRIP} or the \texttt{JTREE} construction
-tag. For the chain-structured factor graph induced by this model, the
-resulting cluster graph is a chain of pair clusters $\{X_t, X_{t+1}\}$
-joined by singleton sepsets $\{X_{t+1}\}$, so sum-product belief propagation
+constructor with either the \texttt{LTRIP}, \texttt{BETHE} or \texttt{JTREE} construction
+tag. For the chain-structured factor graph induced by this model, a non-loopy
+cluster graph is constructed, so sum-product belief propagation
 is exact and converges after one forward and one backward sweep.
 \texttt{loopyBP\_CG} on this tree-structured CG behaves as standard
-forward--backward.
+forward--backward. \\[10pt]
+Sum-product marginal inference was chosen over MAP for two
+reasons:\\
+\begin{itemize}
+  \item The per-time-step marginal $\gamma_t(x) = p(X_t \given
+\bd_{0:T})$ (i.e. the posterior given all the time steps, not just the preceding ones)
+ is the obvious output for visualisation and for any further
+purpose of this algorithm. For example, any function that would need to know
+where the wumpus is would also probably like to know how likely
+the wumpus is to be there. Saying that the wumpus is in square 1 if it's only slightly less likely to be in square 2
+ would be mispresenting vital information for any real world application of hunting wumpi (or wumpuses)
 
-Sum-product marginal inference was chosen over max-product MAP for two
-reasons: (i)~the per-time-step smoothed marginal $\gamma_t(x) = p(X_t \given
-\bd_{0:T})$ is the natural output for visualisation and for the
-classifier-style quantitative evaluation suggested by the brief; (ii)~the
-smoothed marginals are exactly the quantity required by the E-step of the
+  \item the marginals $\gamma_t(x)$ are exactly the quantity required by the E-step of the
 EM algorithm used for dataset 3 (Section~\ref{sec:em}).
+\end{itemize}
+
 
 \subsection{Parameter learning for unknown $p_w, p_c$ (dataset 3)}
 \label{sec:em}
 
-For dataset 3 the detection parameters are unknown. We treat them as
-\textbf{point estimates} learned by the Expectation--Maximisation algorithm.
+For dataset 3, the detection parameters are unknown. We treat them as
+point estimates to be learned by the EM algorithm.
 This choice keeps the graph chain-structured (so inference remains exact in
-each E-step) and reuses the same forward--backward machinery. The
-alternative of placing Beta priors on $p_w, p_c$ and performing full
-Bayesian inference would have required either discretisation or conjugate
-updates and was judged unnecessary for the project's scope; treating the
-parameters as constants (hand-tuned) was rejected because the problem
-explicitly states that the parameters are unknown.
+each E-step). The alternative of placing Beta priors on $p_w, p_c$ and performing full
+Bayesian inference would have been possible but was not implemented because it would
+have caused loopy (and thus non-exact) inference due to the parameters being shared parents of all the observation factors.
 
-The complete-data log-likelihood (dropping terms independent of $\theta =
-(p_w, p_c)$) reduces to a sum of Bernoulli log-likelihoods at the wumpus
-cell and at non-wumpus cells. Replacing the unknown trajectory by its
-posterior yields the expected complete-data log-likelihood
-\begin{equation*}
-Q(\theta \given \theta^{(k)})
-= N_w^{(1)} \log p_w + N_w^{(0)} \log(1{-}p_w)
-+ N_c^{(1)} \log p_c + N_c^{(0)} \log(1{-}p_c) + \text{const},
-\end{equation*}
-where the soft sufficient statistics are
-$A_t = \sum_x \gamma_t^{(k)}(x)\, d_t^{(x)}$ (expected detection at the
-wumpus cell at time $t$),
-$N_w^{(1)} = \sum_t A_t$, $N_w^{(0)} = (T{+}1) - N_w^{(1)}$,
-$N_c^{(1)} = \sum_t (D_t - A_t)$ with $D_t = \sum_i d_t^{(i)}$, and
-$N_c^{(0)} = (T{+}1)(G{-}1) - N_c^{(1)}$. Setting
-$\partial Q / \partial p_w = \partial Q / \partial p_c = 0$ gives:
+The E-step rebuilds the observation factors $\phi_t$ under the current
+parameters and runs BP on the chain to give the smoothed marginals
+$\gamma_t^{(k)}(x) = p(X_t = x \given \bd_{0:T}, \theta^{(k)})$. The M-step
+has a closed-form solution: with $A_t = \sum_x \gamma_t^{(k)}(x)\,
+d_t^{(x)}$ (the expected detection at the wumpus cell at time $t$) and
+$D_t = \sum_i d_t^{(i)}$ (the total detection count at time $t$), the
+updates are
 
 \begin{formulabox}[M-step]
 \[
@@ -387,34 +381,17 @@ p_c^{(k+1)} = \frac{\sum_t (D_t - A_t)}{(T+1)(G-1)}.
 \label{eq:mstep}
 \end{formulabox}
 
-\noindent The E-step rebuilds the observation factors $\phi_t$ under the
-current parameters, runs BP on the chain, and reads off the smoothed
-marginals $\gamma_t^{(k)}$. The algorithm alternates between E and M until
-$\max\bigl(|p_w^{(k+1)} - p_w^{(k)}|,\, |p_c^{(k+1)} - p_c^{(k)}|\bigr) <
-10^{-4}$ or $50$ iterations are reached. Parameter estimates are clamped to
+\noindent The algorithm alternates between E and M until
+both of the parameters change by less than $10^{-4}$ per iteration or $50$ iterations are reached. Parameter estimates are clamped to
 $[10^{-6},\, 1{-}10^{-6}]$ to avoid singular observation factors at boundary
-values. EM is initialised at $(p_w^{(0)}, p_c^{(0)}) = (0.9, 0.1)$; any
-initialisation with $p_w > p_c$ produces informative observation factors
-that bootstrap the alternation toward the correct likelihood mode.
+values.\colorbox{red!100}{\ref{123}} EM is initialised at $(p_w^{(0)}, p_c^{(0)}) = (0.9, 0.1)$; 
 
 \subsection{Scope of solution}
 \label{sec:scope}
 
-Following the brief's first tip --- ``don't be too ambitious'' --- this work
-addresses datasets 1--3 in depth and does not extend to datasets 4--5,
-which additionally feature unknown occupied cells. Two extensions to the
-model were considered for the occupied-cell case: (i)~joint inference over
-the unobserved trajectory and binary map RVs $M_c \in \{0, 1\}$, which would
-render the graph loopy via $M_c$ appearing in multiple transition factors
-and so require approximate inference; and (ii)~alternating EM-style
-estimation treating the map as a parameter, which preserves the
-tree-structured $X$ chain but requires a non-trivial new M-step derivation
-for the map probabilities. Both introduce failure modes for which
-insufficient time remained in the project window; choosing depth over
-breadth permitted thorough analysis of datasets 1--3
-(Section~\ref{sec:results}), including \texttt{LTRIP} vs \texttt{JTREE}
-comparison and verification of forward--backward smoothing behaviour at
-trajectory endpoints.
+This work
+addresses datasets 1--3 in depth and does not extend to datasets 4--5.
+Choosing to focus on these datasets allowed for thorough analysis of datasets 1--3. 
 
 %=========================================================
 \section{Implementation}
@@ -422,14 +399,14 @@ trajectory endpoints.
 
 The implementation comprises two main programs and a shared helper library:
 \begin{itemize}
-\item \texttt{miniproject.cc} --- datasets 1--2 (known parameters)
-\item \texttt{miniproject\_q3.cc} --- dataset 3 (EM-based parameter learning)
-\item \texttt{miniproject\_helpers.cc} --- I/O for detection grids, ground
+\item \texttt{miniproject.cc}: datasets 1--2 (known parameters)
+\item \texttt{miniproject\_q3.cc}: dataset 3 (EM-based parameter learning)
+\item \texttt{miniproject\_helpers.cc}: helper files for detection grids, ground
 truth, marginals, and trajectories
 \end{itemize}
-Both main programs share the same skeleton --- load detections, build
+Both main programs share the same skeleton: load detections, build
 factors, construct cluster graph, run BP, extract per-time-step marginals,
-write results to disk --- with the EM variant wrapping factor build, CG
+write results to disk, but with the EM variant wrapping factor build, CG
 construction, BP, and marginal extraction in an outer loop implementing the
 M-step of Section~\ref{sec:em}. Each program takes the dataset directory,
 output directory, initial $(p_w, p_c)$, and an optional cluster-graph type
@@ -450,8 +427,8 @@ for (int i = 0; i < G; ++i) (*cellDom)[i] = i;
 
 \subsection{Building the factors}
 
-\paragraph{Prior.} The uniform prior on $X_0$ is encoded compactly by giving
-an empty sparse map with a default-entry probability of $1/G$, so every
+\paragraph{Prior.} The uniform prior on $X_0$ is encoded by giving
+an empty map with a default probability of $1/G$, so every
 entry of the length-$G$ table is automatically $1/G$:
 
 \begin{cppd}
@@ -461,10 +438,10 @@ rcptr<Factor> prior = uniqptr<DT>(new DT(
 \end{cppd}
 
 \paragraph{Transition factor.} The transition table is built by enumerating
-each source cell and accumulating $\tfrac{1}{4}$ of mass per direction into
-the appropriate destination. Out-of-bounds moves are mapped back to the
+each source cell and moving $\tfrac{1}{4}$ of mass per direction into
+the right cell. Illegal moves are mapped back to the
 source cell by \texttt{clipMove}, which automatically generates the
-corner/edge self-loop mass without an explicit case split:
+corner/edge self-loop mass:
 
 \begin{cppd}
 auto clipMove = [W, H, &cellOf](int row, int col, int drow, int dcol) {
@@ -485,11 +462,11 @@ for (int i = 0; i < G; ++i) {
 \end{cppd}
 
 \noindent The sparse map is built once and reused across all $T$ transition
-factor instantiations, exploiting the time-homogeneity of the dynamics.
+factors, using the fact that all the transitions use the same underlying structure.
 
 \paragraph{Observation factor.} Each $\phi_t$ takes one of the two values
 $\phi_{\text{on}} = p_w/p_c$ or $\phi_{\text{off}} = (1{-}p_w)/(1{-}p_c)$
-per cell, determined by the detection grid at time $t$:
+per cell (see section \ref{sec:obs}), determined by the detection grid at time $t$:
 
 \begin{cppd}
 const double phiOn  = cfg.pw / cfg.pc;
@@ -500,8 +477,7 @@ for (int t = 0; t <= lastT; ++t) {
   for (int row = 0; row < H; ++row)
     for (int col = 0; col < W; ++col) {
       const int j = cellOf(row, col);
-      phiProbs[{T(j)}] =
-          (detections[t][row][col] == 1) ? phiOn : phiOff;
+      phiProbs[{T(j)}] = (detections[t][row][col] == 1) ? phiOn : phiOff;
     }
   rcptr<Factor> phi = uniqptr<DT>(new DT(
       {X[t]}, {cellDom}, defProb, phiProbs));
@@ -511,12 +487,11 @@ for (int t = 0; t <= lastT; ++t) {
 
 \subsection{Cluster graph and BP}
 
-The cluster-graph construction algorithm is selectable at runtime, enabling
-the \texttt{LTRIP}/\texttt{JTREE} comparison reported in
-Section~\ref{sec:results}:
+The cluster-graph construction algorithm is selectable at runtime via the command line, enabling
+the \texttt{LTRIP}/\texttt{JTREE} comparison (see Section~\ref{sec:results}):
 
 \begin{cppd}
-map<RVIdType, AnyType> obsv;  // evidence baked into phi_t; no RV-level obs
+map<RVIdType, AnyType> obsv;  
 if (cfg.cgType == "JTREE")
   cgPtr = new ClusterGraph(ClusterGraph::JTREE, factors, obsv);
 else if (cfg.cgType == "BETHE")
@@ -530,9 +505,8 @@ unsigned nMsgs = loopyBP_CG(*cgPtr, msgs, msgQ);
 
 \subsection{Extracting marginals and the EM loop}
 
-For each $t$ the smoothed marginal $\gamma_t$ is obtained by querying the
-cluster graph for the posterior over $X_t$ and reducing to each cell value
-in turn:
+For each $t$ the marginal $\gamma_t$ is obtained by querying the
+cluster graph for the posterior over $X_t$ and reducing for each cell value:
 
 \begin{cppd}
 rcptr<Factor> q = queryLBP_CG(cg, msgs, {X[t]})->normalize();
@@ -543,10 +517,10 @@ for (int j = 0; j < G; ++j) {
 }
 \end{cppd}
 
-\noindent In \texttt{miniproject\_q3.cc} the same E-step logic is wrapped in
-an outer EM loop. After each E-step the soft sufficient statistics
-$A_t$ are computed directly from \texttt{gammas[t][j]} and the detection
-grid, and the M-step updates $(p_w, p_c)$ per Equation~(\ref{eq:mstep}):
+\noindent In \texttt{miniproject\_q3.cc} the E-step code is wrapped in
+an EM loop. After each E-step the
+$A_t$ values are computed directly from \texttt{gammas[t][j]} and the detection
+grid, and the M-step updates $(p_w, p_c)$ per the equation in Section~(\ref{eq:mstep}):
 
 \begin{cppd}
 double sumA = 0.0, sumDminusA = 0.0;
@@ -554,15 +528,12 @@ for (int t = 0; t <= lastT; ++t) {
   double At = 0.0;
   for (int row = 0; row < H; ++row)
     for (int col = 0; col < W; ++col)
-      At += gammas[t][cellOf(row, col)]
-            * static_cast<double>(detections[t][row][col]);
-  sumA       += At;
+      At += gammas[t][cellOf(row, col)] * static_cast<double>(detections[t][row][col]);
+  sumA += At;
   sumDminusA += static_cast<double>(Dt[t]) - At;
 }
 double newPw = sumA / static_cast<double>(lastT + 1);
-double newPc = sumDminusA
-             / (static_cast<double>(lastT + 1)
-              * static_cast<double>(G - 1));
+double newPc = sumDminusA / (static_cast<double>(lastT + 1) * static_cast<double>(G - 1));
 newPw = clamp(newPw, PARAM_EPS, 1.0 - PARAM_EPS);
 newPc = clamp(newPc, PARAM_EPS, 1.0 - PARAM_EPS);
 \end{cppd}
@@ -573,7 +544,7 @@ For each time step the smoothed marginal is reshaped from its length-$G$
 form into a $W \times H$ matrix of probabilities and written to
 \texttt{marginal\_<tt>.txt}; the per-step argmax cell forms a trajectory
 file in the ground-truth coordinate format $(x, y) = (\text{col},
-\text{row})$ defined by the brief.
+\text{row})$.
 
 %=========================================================
 \section{Results and analysis}
@@ -683,6 +654,14 @@ S.~Russell and P.~Norvig, \emph{Artificial Intelligence: A Modern Approach},
 H.~Koen, H.~Roodt, and A.~De~Waal, ``An expert-driven causal model of the
 rhino poaching problem,''
 \emph{Ecological Modelling}, vol.~347, pp.~29--39, 2017.
+
+\bibitem{luo2008em}
+Y.~Luo, ``Basics of the EM algorithm,''
+Scribe notes for COS~424: Interacting with Data (Lecturer: D.~Blei),
+Lecture~11, Princeton University, Mar.~11, 2008. [Online]. Available:
+\url{https://www.cs.princeton.edu/courses/archive/spr08/cos424/scribe_notes/0311.pdf}
+
+
 
 % Add any further references you actually consulted, e.g.:
 % \bibitem{koller2009pgm}

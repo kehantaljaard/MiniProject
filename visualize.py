@@ -40,8 +40,10 @@ def load_observations(dataset_dir: Path):
     return [np.loadtxt(p) for p in files]
 
 
-def load_trajectory(path: Path):
+def load_trajectory(path: Path, *, required: bool = False):
     if not path.exists():
+        if required:
+            sys.exit(f"Ground-truth file not found: {path}")
         return None
     return np.loadtxt(path, dtype=int).reshape(-1, 2)  # (x, y) per row
 
@@ -82,7 +84,10 @@ def main():
     frames = load_marginals(out_dir)
     traj = load_trajectory(out_dir / "trajectory.txt")
     obs = load_observations(Path(args.observations).expanduser()) if args.observations else None
-    truth = load_trajectory(Path(args.ground_truth).expanduser()) if args.ground_truth else None
+    truth = (
+        load_trajectory(Path(args.ground_truth).expanduser(), required=True)
+        if args.ground_truth else None
+    )
 
     H, W = frames[0].shape
     vmax = max(f.max() for f in frames)

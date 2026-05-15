@@ -1,6 +1,6 @@
 PWD /home/kehantaljaard/Desktop/SUN/DE424/MiniProject
 INPUT /var/lib/texmf/web2c/luahbtex/lualatex.fmt
-INPUT ./miniproject_report.tex
+INPUT /home/kehantaljaard/Desktop/SUN/DE424/MiniProject/miniproject_report.tex
 OUTPUT miniproject_report.log
 INPUT /usr/share/texlive/texmf-dist/tex/latex/tex-ini-files/lualatexquotejobname.lua
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/ltluatex.lua
@@ -348,16 +348,16 @@ INPUT ./miniproject_report.pyg
 INPUT ./_minted-miniproject_report/9E3377CC091B4956B95DF3A7951FB3AAE96107B478B26751345DADA14051BB48.pygtex
 OUTPUT miniproject_report.pyg
 INPUT ./miniproject_report.pyg
-INPUT ./_minted-miniproject_report/53580EC45B6A1CC7DB208AF4C1C9A72DE96107B478B26751345DADA14051BB48.pygtex
+INPUT ./_minted-miniproject_report/1109720BE8C2BD101DCD8BD86F050CBBE96107B478B26751345DADA14051BB48.pygtex
 OUTPUT miniproject_report.pyg
 INPUT ./miniproject_report.pyg
-INPUT ./_minted-miniproject_report/EA6716B269BC247AEDF97B51AD464F0BE96107B478B26751345DADA14051BB48.pygtex
+INPUT ./_minted-miniproject_report/F62773FEB63AA583F26FBDFBD9DBE756E96107B478B26751345DADA14051BB48.pygtex
 OUTPUT miniproject_report.pyg
 INPUT ./miniproject_report.pyg
 INPUT ./_minted-miniproject_report/9F2792531647AFD69B1D43750D18E959E96107B478B26751345DADA14051BB48.pygtex
 OUTPUT miniproject_report.pyg
 INPUT ./miniproject_report.pyg
-INPUT ./_minted-miniproject_report/B8C0B77F078B12AB9C0FAD8863811F62E96107B478B26751345DADA14051BB48.pygtex
+INPUT ./_minted-miniproject_report/265EBF8796E8B0B97400190F91AD2040E96107B478B26751345DADA14051BB48.pygtex
 INPUT ./miniproject_report.aux
 INPUT ./miniproject_report.out
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
