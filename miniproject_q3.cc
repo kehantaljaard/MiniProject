@@ -47,7 +47,7 @@ struct RunConfig {
 
 //EM PARAMETERS
 static const int EM_MAX_ITER = 50;
-static const double EM_TOL      = 1e-4;
+static const double EM_TOL      = 1e-6;
 static const double PARAM_EPS   = 1e-6;
 
 int main(int argc, char *argv[]) {

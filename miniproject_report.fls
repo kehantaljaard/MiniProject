@@ -245,6 +245,7 @@ INPUT /usr/share/texlive/texmf-dist/tex/generic/stringenc/stringenc.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
 INPUT /usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/float/float.sty
 INPUT ./miniproject_report.aux
 OUTPUT miniproject_report.aux
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
@@ -358,6 +359,14 @@ INPUT ./_minted-miniproject_report/9F2792531647AFD69B1D43750D18E959E96107B478B26
 OUTPUT miniproject_report.pyg
 INPUT ./miniproject_report.pyg
 INPUT ./_minted-miniproject_report/265EBF8796E8B0B97400190F91AD2040E96107B478B26751345DADA14051BB48.pygtex
+INPUT ./output/dataset1/images/first4_sidebyside.png
+INPUT ./output/dataset1/images/first4_sidebyside.png
+INPUT ./output/dataset2/images/first4_sidebyside.png
+INPUT ./output/dataset2/images/first4_sidebyside.png
+INPUT ./images/dataset3_first6.png
+INPUT ./images/dataset3_first6.png
+INPUT ./images/convergence.png
+INPUT ./images/convergence.png
 INPUT ./miniproject_report.aux
 INPUT ./miniproject_report.out
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb

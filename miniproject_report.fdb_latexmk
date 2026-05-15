@@ -1,5 +1,5 @@
 # Fdb version 4
-["lualatex"] 1778867299.61251 "/home/kehantaljaard/Desktop/SUN/DE424/MiniProject/miniproject_report.tex" "miniproject_report.pdf" "miniproject_report" 1778867302.06596 0
+["lualatex"] 1778874474.35259 "/home/kehantaljaard/Desktop/SUN/DE424/MiniProject/miniproject_report.tex" "miniproject_report.pdf" "miniproject_report" 1778874477.28266 0
   "/home/kehantaljaard/.local/share/fonts/JetBrains Mono Italic Nerd Font Complete.ttf" 1580027806 921120 924431ffe90f531598499819f3cb11d5 ""
   "/home/kehantaljaard/.local/share/fonts/JetBrains Mono Regular Nerd Font Complete.ttf" 1580016484 917624 8d7b07e193d405aeefd748c35c3703c8 ""
   "/home/kehantaljaard/.texlive2023/texmf-var/luatex-cache/generic/fonts/otl/jetbrains-mono-bold-italic-nerd-font-complete.luc" 1778788943.55169 513828 d0af58db5167f8c65d3c7255837a24b7 ""
@@ -20,7 +20,7 @@
   "/home/kehantaljaard/.texlive2023/texmf-var/luatex-cache/generic/fonts/otl/lmromandemi10-regular.luc" 1778788944.7547 127542 528f93bb069665c0c47f2eda6eb9573e ""
   "/home/kehantaljaard/.texlive2023/texmf-var/luatex-cache/generic/names/luaotfload-lookup-cache.luc" 1778789830.44719 1895 80f918afbd7ec7603eef14e92d3e594e ""
   "/home/kehantaljaard/.texlive2023/texmf-var/luatex-cache/generic/names/luaotfload-names.luc.gz" 1778788942.84569 528805 15ccef20a6481330413a21a0aab21df0 ""
-  "/home/kehantaljaard/Desktop/SUN/DE424/MiniProject/miniproject_report.tex" 1778867299.37796 26208 a61245e904bce9488dd35a6c431e9b16 ""
+  "/home/kehantaljaard/Desktop/SUN/DE424/MiniProject/miniproject_report.tex" 1778874471.10045 28382 31e069633df898dc0eb051838666504b ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy6.tfm" 1246382020 1124 14ccf5552bc7f77ca02a8a402bea8bfb ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy7.tfm" 1246382020 1120 7f9f170e8aa57527ad6c49feafd45d54 ""
@@ -191,6 +191,7 @@
   "/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty" 1579991033 13886 d1306dcf79a944f6988e688c1785f9ce ""
   "/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty" 1601931149 46845 3b58f70c6e861a13d927bff09d35ecbc ""
   "/usr/share/texlive/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty" 1705955721 43712 c3d93734f3bc56e03c21b3dc69268d3c ""
+  "/usr/share/texlive/texmf-dist/tex/latex/float/float.sty" 1137110151 6749 16d2656a1984957e674b149555f1ea1d ""
   "/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec-luatex.sty" 1642282977 150585 e7858b29d466f38afac90db54bb48055 ""
   "/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.cfg" 1532898934 549 c4adac819276241fea8eb79c5ab7b99e ""
   "/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.lua" 1642282977 3021 d020be140dbb56718a42324548f9a72e ""
@@ -322,9 +323,13 @@
   "_minted-miniproject_report/9F2792531647AFD69B1D43750D18E959E96107B478B26751345DADA14051BB48.pygtex" 1778841120.80748 1451 6ecb9eb349950450a1d2525da7ebf736 ""
   "_minted-miniproject_report/F62773FEB63AA583F26FBDFBD9DBE756E96107B478B26751345DADA14051BB48.pygtex" 1778840500.28573 1746 f6a79554b32eb0063ea94118022675a6 ""
   "_minted-miniproject_report/dracula.pygstyle" 1778789829.70598 7040 0deb344386559f74d88e8418cef62e19 ""
-  "miniproject_report.aux" 1778867301.78597 7140 59bf341fae57581f89de5da85af9c7d8 "lualatex"
-  "miniproject_report.out" 1778867301.78597 4403 0ff8f1f5e5cace89fe1862193f7a410b "lualatex"
-  "miniproject_report.tex" 1778867299.37796 26208 a61245e904bce9488dd35a6c431e9b16 ""
+  "images/convergence.png" 1778869990.45797 82696 d8a17b3e82db8462305e80b57bbbba4c ""
+  "images/dataset3_first6.png" 1778870500.46692 46196 db6deb9e9cb372ef172ee22043c3e386 ""
+  "miniproject_report.aux" 1778874476.9373 8343 b951524a2ddc7b8d6104962f74a7abb0 "lualatex"
+  "miniproject_report.out" 1778874476.9383 4274 f43c076edfbe40e6ee18c9087f7d755f "lualatex"
+  "miniproject_report.tex" 1778874471.10045 28382 31e069633df898dc0eb051838666504b ""
+  "output/dataset1/images/first4_sidebyside.png" 1778868786.49314 24303 956b07f7d877153c2204354cc656700d ""
+  "output/dataset2/images/first4_sidebyside.png" 1778868978.54222 45538 3c328557db0adc71e640cad1fb3e9514 ""
   (generated)
   "miniproject_report.aux"
   "miniproject_report.log"

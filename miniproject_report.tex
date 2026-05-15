@@ -21,6 +21,7 @@
             linkcolor=blue!50!black,
             citecolor=blue!50!black,
             urlcolor=blue!50!black]{hyperref}
+\usepackage{float}
 
 % --- Notation shortcuts ---
 \newcommand{\given}{\,\vert\,}
@@ -365,24 +366,22 @@ Bayesian inference would have been possible but was not implemented because it w
 have caused loopy (and thus non-exact) inference due to the parameters being shared parents of all the observation factors.
 
 The E-step rebuilds the observation factors $\phi_t$ under the current
-parameters and runs BP on the chain to give the smoothed marginals
+parameters and runs BP to give the smoothed marginals
 $\gamma_t^{(k)}(x) = p(X_t = x \given \bd_{0:T}, \theta^{(k)})$. The M-step
 has a closed-form solution: with $A_t = \sum_x \gamma_t^{(k)}(x)\,
 d_t^{(x)}$ (the expected detection at the wumpus cell at time $t$) and
 $D_t = \sum_i d_t^{(i)}$ (the total detection count at time $t$), the
 updates are
 
-\begin{formulabox}[M-step]
-\[
+\begin{equation*}
 p_w^{(k+1)} = \frac{\sum_t A_t}{T+1},
 \qquad
 p_c^{(k+1)} = \frac{\sum_t (D_t - A_t)}{(T+1)(G-1)}.
-\]
 \label{eq:mstep}
-\end{formulabox}
+\end{equation*}
 
 \noindent The algorithm alternates between E and M until
-both of the parameters change by less than $10^{-4}$ per iteration or $50$ iterations are reached. Parameter estimates are clamped to
+both of the parameters change by less than $10^{-6}$ per iteration or $50$ iterations are reached. Parameter estimates are clamped to
 $[10^{-6},\, 1{-}10^{-6}]$ to avoid singular observation factors at boundary
 values.\colorbox{red!100}{\ref{123}} EM is initialised at $(p_w^{(0)}, p_c^{(0)}) = (0.9, 0.1)$; 
 
@@ -554,12 +553,12 @@ file in the ground-truth coordinate format $(x, y) = (\text{col},
 
 The inferred trajectory is evaluated against the provided ground truth using:
 \begin{itemize}
-\item \textbf{Per-step accuracy} --- fraction of time steps for which
+\item \textbf{Per-step accuracy}: the fraction of time steps for which
 $\argmax_x \gamma_t(x)$ equals the ground-truth cell.
-\item \textbf{Mean $\ell_2$ cell distance} --- average Euclidean distance
+\item \textbf{Mean $l_2$ cell distance}: average Euclidean distance
 (in cells) between the inferred argmax cell and the ground-truth cell
 across time steps.
-\item \textbf{Top-$k$ accuracy} --- fraction of time steps for which the
+\item \textbf{Top-k accuracy}: the fraction of time steps for which the
 ground-truth cell lies in the $k$ most probable cells under $\gamma_t$,
 reported for $k = 1, 3, 5$.
 \end{itemize}
@@ -568,64 +567,85 @@ steps with the ground-truth cell overlaid.
 
 \subsection{Dataset 1 (5\,$\times$\,5, $p_w{=}0.95$, $p_c{=}0.05$)}
 
-[FILL IN: 2--3 sentences summarising the result, referencing
-Figure~\ref{fig:d1} and the corresponding row of Table~\ref{tab:quant}.]
-
+Dataset 1 was the simplest, with a small grid, and the argmax output was the same as 
+the ground truth for every timestep. See image \ref{fig:d1} for the posterior heatmaps of the first
+4 frames, the posterior probability was very certain of all wumpus positions for all timesteps.
 \begin{figure}[ht]
 \centering
-% \includegraphics[width=0.95\textwidth]{figures/dataset1_heatmaps.pdf}
-\caption{Posterior heatmaps for dataset 1 at representative time steps;
-ground-truth cell marked with a black square. [REPLACE WITH FIGURE]}
+\includegraphics[width=0.95\textwidth]{output/dataset1/images/first4_sidebyside.png}
+\caption{Posterior heatmaps for dataset 1 at the first 4 time steps;
+ground-truth cell marked with a blue cross, the inferred argmax cell with a green cross and the
+posterior probability for each cell as the heatmap.}
 \label{fig:d1}
 \end{figure}
 
 \subsection{Dataset 2 (20\,$\times$\,20, $p_w{=}0.9$, $p_c{=}0.1$)}
 
-[FILL IN: 2--3 sentences for dataset 2. Note any observations about the
-larger grid or the smoothing behaviour at trajectory endpoints if relevant.]
+The larger grid of dataset 2 had slightly noisier detections, but except for in cases where
+2 cells were almost equally likely, the argmax was still correct. For example, in the first frame
+there was not enough information to know whether the wumpus was in cell [15, 16] (p = 0.493)or [16, 17] (p = 0.487)
+See figure \ref{fig:d2} for the posterior heatmaps of the first 4 frames. 
 
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\textwidth]{output/dataset2/images/first4_sidebyside.png}
+\caption{Posterior heatmaps for dataset 2 at the first 4 time steps;
+ground-truth cell marked with a blue cross, the inferred argmax cell with a green cross and
+the posterior probability for each cell as the heatmap.}
+\label{fig:d2}
+\end{figure}
 \subsection{Dataset 3 (10\,$\times$\,20, EM-learned parameters)}
 
-[FILL IN: 2--3 sentences for dataset 3. Include the converged values of
-$(p_w, p_c)$ and the number of EM iterations.]
+The accuracy on dataset 3 was the worst, however the initial observation frames were highly uninformative
+due to the noisy observations being in places that the wumpus could conceivably be, and therefore the certainty in the first 
+4 frames was very low and inconsistent with the ground truth. See figure \ref{fig:d3} for the posterior heatmaps of the first 6 frames.
+After frame 4, the observations were more informative and the posterior certainty increased, however the argmax was still incorrect for time step 6, 
+where the wumpus could have moved to 2 different positions with almost equal probability.
 
-\begin{table}[ht]
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.95\textwidth]{images/dataset3_first6.png}
+\caption{Posterior heatmaps for dataset 3 at the first 6 time steps;
+ground-truth cell marked with a blue cross, the inferred argmax cell with a green cross and
+the posterior probability for each cell as the heatmap.}
+\label{fig:d3}
+\end{figure}
+
+\begin{table}[H]
 \centering\small
 \begin{tabular}{@{}lcccc@{}}
 \toprule
 Dataset & Per-step accuracy & Mean cell distance & Top-3 acc.\ & Top-5 acc.\ \\
 \midrule
-1 & [XX.X\%] & [X.XX] & [XX.X\%] & [XX.X\%] \\
-2 & [XX.X\%] & [X.XX] & [XX.X\%] & [XX.X\%] \\
-3 & [XX.X\%] & [X.XX] & [XX.X\%] & [XX.X\%] \\
+1 & 100.0\% & 0.00 & 100.0\% & 100.0\% \\
+2 & 85.0\% & 0.21 & 100.0\% & 100.0\% \\
+3 & 80.0\% & 0.20 & 90.0\% & 100.0\% \\
 \bottomrule
 \end{tabular}
-\caption{Quantitative results across the three datasets addressed.}
+\caption{Accuracy results across the three datasets.}
 \label{tab:quant}
 \end{table}
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \centering
-% \includegraphics[width=0.6\textwidth]{figures/dataset3_em_convergence.pdf}
-\caption{Convergence of $p_w$ and $p_c$ under EM on dataset 3.
-[REPLACE WITH FIGURE]}
+\includegraphics[width=0.6\textwidth]{images/convergence.png}
+\caption{Convergence of $p_w$ and $p_c$ on dataset 3.}
 \label{fig:em}
 \end{figure}
 
-EM converged after [N] iterations to $(\hat p_w, \hat p_c) = ([X.XX],
-[X.XX])$. The parameter deltas decreased monotonically across iterations,
-consistent with the theoretical guarantee that EM is monotone in the
-marginal data log-likelihood --- a useful sanity check given the non-trivial
-E-step.
+EM converged after 9 iterations to $(\hat p_w, \hat p_c) = (0.815,
+0.076)$ with an epsilon of $10^{-6}$
 
-\subsection{Smoothing behaviour and cluster-graph choice}
+\subsection{Cluster-graph choice}
 
-[FILL IN if applicable: report the \texttt{LTRIP} vs \texttt{JTREE}
-comparison, including any observations about the per-time-step posterior
-sharpness at the start, middle, and end of the trajectory. The brief flags
-``testing of additional aspects (e.g.\ convergence behaviour)'' and ``design,
-implementation and comparison of several different solution variations'' as
-contributing to a higher mark.]
+Comparing the \texttt{LTRIP}, \texttt{BETHE} and \texttt{JTREE} inference on dataset 3,
+over many iterations, the mean time for \texttt{LTRIP} was lowest at 0.5s, with \texttt{JTREE} at 0.55s and \texttt{BETHE} at
+0.65, all with negligible difference in time variance. In a situation where inference about the current position of the wumpus
+is necessary as fast as possible, and there is a significant amount of data, \texttt{LTRIP} would be the best choice. 
+If the wumpus is doing what it was originally designed for by Gregory Yob (being hunted),
+faster inference of the wumpus would be more exact, because the wumpus is running away, and thus changing it's position, as it's position is being
+inferred. 
+
 
 %=========================================================
 \section{Conclusion}
@@ -638,6 +658,12 @@ cluster graph); brief acknowledgement of the un-tackled extensions to
 occupied cells in datasets 4--5 with an indication of the natural extension
 path (loopy BP over binary map RVs vs alternating EM treating the map as a
 parameter).]
+
+The HMM-Bayes net approach was successful in inferring the wumpus position accurately most of the time, and where
+it was incorrect it was incorrect but unsure of it's correctness. The EM algorithm was able to learn the parameters
+for dataset 3, however the accuracy was worse than datasets 1 and 2, which is a result that would require further investigation.
+The cluster graph choice did not have a significant effect on the results, however \texttt{LTRIP} was slightly faster than
+\texttt{JTREE} and \texttt{BETHE}.
 
 %=========================================================
 \begin{thebibliography}{9}

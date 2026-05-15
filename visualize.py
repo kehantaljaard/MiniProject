@@ -119,7 +119,7 @@ def main():
 
     (map_marker,) = ax_marg.plot(
         [], [], marker="+", color="green", markersize=12, markeredgewidth=2,
-        linestyle="None", label="MAP",
+        linestyle="None", label="ARGMAX",
     )
     (truth_marker,) = ax_marg.plot(
         [], [], marker="x", color="blue", markersize=10, markeredgewidth=2,
