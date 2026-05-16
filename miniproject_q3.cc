@@ -247,7 +247,7 @@ int main(int argc, char *argv[]) {
                   static_cast<double>(detections[t][row][col]);
           }
         }
-        sumA       += At;
+        sumA += At;
         sumDminusA += (static_cast<double>(Dt[t]) - At);
       }
  

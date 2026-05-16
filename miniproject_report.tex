@@ -22,6 +22,7 @@
             citecolor=blue!50!black,
             urlcolor=blue!50!black]{hyperref}
 \usepackage{float}
+\usepackage{ stmaryrd }
 
 % --- Notation shortcuts ---
 \newcommand{\given}{\,\vert\,}
@@ -76,6 +77,16 @@
 \setlist[itemize]{topsep=2pt, itemsep=1pt, parsep=0pt}
 \setlist[enumerate]{topsep=2pt, itemsep=1pt, parsep=0pt}
 
+% --- IEEEtran .bst control-entry support (for non-IEEEtran doc classes) ---
+\makeatletter
+\def\bstctlcite{\@ifnextchar[{\@bstctlcite}{\@bstctlcite[@auxout]}}
+\def\@bstctlcite[#1]#2{\@bsphack
+  \@for\@citeb:=#2\do{%
+    \edef\@citeb{\expandafter\@firstofone\@citeb}%
+    \if@filesw\immediate\write\csname #1\endcsname{\string\citation{\@citeb}}\fi}%
+  \@esphack}
+\makeatother
+
 \title{
 DE\,424 Mini Project - Find the Wumpus\\[2pt]
 \large A Probabilistic Graphical Model for Wumpus Tracking
@@ -84,6 +95,7 @@ DE\,424 Mini Project - Find the Wumpus\\[2pt]
 \date{14 May 2026}
 
 \begin{document}
+\bstctlcite{IEEEexample:BSTcontrol}
 \maketitle
 \vspace{-1em}
 
@@ -96,19 +108,20 @@ accepted information from any source not properly acknowledged in this
 declaration or elsewhere in the report.
 
 \paragraph{Use of AI assistance.}
-% Be honest and specific. Replace the paragraph below with an accurate, detailed
-% account of how you used AI tools during this project, in line with the
-% Stellenbosch University and DE424 academic integrity policies.
-% Suggested points to cover (delete those that don't apply, expand those that do):
-%   - Which AI tool(s) you used
-%   - Conceptual clarification (e.g. forward-backward smoothing, cluster graph
-%     construction in emdw, the asymmetric-smoothing investigation)
-%   - Help with the EM M-step derivation
-%   - Code review and debugging assistance (e.g. FProb default-value question,
-%     LTRIP vs JTREE comparison)
-%   - LaTeX scaffolding for this report
-% Then affirm that all intellectual decisions and verifications are your own.
-[FILL IN: specific account of AI tool use.]
+An AI coding assistant (Claude) was used in a limited, supporting capacity for
+this project. Its use was restricted to two areas. First, transcribing and
+typesetting: the model derivations, the design reasoning and the analysis in
+this report were worked out by hand on paper, and Claude was used to
+help convert that handwritten work into LaTeX and to tidy the document
+formatting. Second, plotting: Claude helped write parts of the Python
+scripts used to create the figures from the result data. It
+was not used to derive the model,
+implement the core \texttt{emdw} inference or EM code, or interpret the results.
+Claude was also given the full emdw library codebase and wrote a reference manual
+that I used often while writing the implementation, as it contained good emdw and C++
+practices and explanations. All derivations, modelling and design decisions, code implementation, 
+and the analysis of all results are my own work. I also used claude to setup building so that I could run
+my code outside of /devel/emdw and have it work and build in a separate folder. 
 
 \paragraph{Other sources.}
 The DE\,424 lecture notes (Weeks~1--10), the \emph{emdw} user guide and the
@@ -119,33 +132,34 @@ were consulted for theoretical background and library API usage.
 %=========================================================
 \section*{ECSA Graduate Attributes}
 
-\paragraph{GA\,1 -- Problem solving.}
-The wumpus tracking problem is formulated from first principles as a hidden
-Markov model with a uniform-random-walk transition and conditionally
-independent per-cell Bernoulli observations (Section~\ref{sec:design}). The
-model structure is motivated by the problem's Markov dynamics and the
-conditional independence of the detection grid given the unobserved position;
-references to the literature underpinning this formulation are given
-throughout~\cite{barber2012bayesian, russell2022ai}. A key simplification , 
-collapsing $(T{+}1)G$ binary detection RVs into $T{+}1$ unary evidence factors
-on the unobserved variables, is derived from first principles in
-Section~\ref{sec:obs}. Design trade-offs (exact inference on a chain,
-point-estimate parameter learning by EM rather than full Bayesian inference,
-scoping to datasets 1--3) are analysed in Sections~\ref{sec:scope}
+\paragraph{GA\,1 - Problem solving.}
+I formulated the wumpus tracking problem as a hidden Markov model, using a
+uniform random-walk transition between cells and a per-cell Bernoulli
+detection model (Section~\ref{sec:design}). This structure was chosen because
+the wumpus moves according to Markov dynamics, and because the per-cell
+detections are conditionally independent given the wumpus position. I derived
+the model by hand, with guidance from Barber's work on hidden Markov
+models~\cite[Ch.~23]{barber2012bayesian}. The main simplification, in which
+the $(T{+}1)G$ binary detection variables are collapsed into $T{+}1$ unary
+evidence factors on the wumpus positions, is derived in
+Section~\ref{sec:obs}. The main design trade-offs, specifically learning
+$p_w$ and $p_c$ as point estimates by EM rather than by full Bayesian inference,
+and restricting the work to
+datasets 1--3, are discussed in Sections~\ref{sec:scope}
 and~\ref{sec:results}.
 
-\paragraph{GA\,2 -- Application of scientific and engineering knowledge.}
-The solution applies probability theory (joint factorisation,
-marginalisation, conditional independence), graphical-model theory (Bayes
-networks, factor graphs, cluster graphs), and inference algorithms
-(sum-product belief propagation, the Expectation--Maximisation algorithm) to
-the engineering problem of tracking from inaccurate measurements. The C++
-implementation using the \texttt{emdw} library (Section~\ref{sec:impl})
-operationalises the design. Convergence behaviour and numerical
-considerations are reported in Section~\ref{sec:results}.
+\paragraph{GA\,2 - Application of scientific and engineering knowledge.}
+The solution applies probability theory (joint factorisation, marginalisation
+and conditional independence), graphical-model theory (Bayes networks, factor
+graphs and cluster graphs) and the relevant inference algorithms (sum-product
+belief propagation and the Expectation--Maximisation algorithm) to the
+engineering problem of tracking a target from noisy measurements. The C++
+implementation, built on the \texttt{emdw} library, realises this design
+(Section~\ref{sec:impl}). The convergence behaviour of the EM parameter learning is
+reported in Section~\ref{sec:results}.
 
 %=========================================================
-\section{Problem description}
+\section{Problem description} 
 
 A wumpus performs a random walk on a $W \times H$ grid over $T{+}1$ discrete
 time steps. Its position is unobserved. At each time step, every cell of the grid
@@ -190,7 +204,7 @@ The unobserved variables are the wumpus positions $X_0, \ldots, X_T$, each a
 discrete RV over the $G$ cells under a position encoding    
 $i = \text{row} \cdot W + \text{col}$. The observed variables are the
 detections $D_t^{(i)}$ for each cell $i$ and time $t$.
-The conditional independence assumptions encoded by the model are:
+The conditional independence assumptions encoded by the model are (from [\cite{barber2012bayesian}, Ch.~23]) the following:
 \begin{itemize}
 \item \textbf{Markov dynamics}: $X_{t+1} \cind X_{0:t-1} \given X_t$.
 \item \textbf{Conditionally independent detections}: given $X_t$, the
@@ -237,7 +251,7 @@ has $G$ binary detection children.}
 
 \subsection{Initial-state prior}
 
-In the absence of information about the wumpus's starting cell, a uniform
+Due to a lack of information about the wumpus's starting cell, a uniform
 prior is used:
 \begin{equation}
 p(X_0 = x) = \frac{1}{G}, \qquad \forall x \in \states.
@@ -255,7 +269,7 @@ direction, the transition factor is given by:
 p(X_{t+1} = j \given X_t = i)
 \;=\;
 \tfrac{1}{4} \sum_{d \in \{U, D, L, R\}}
-\Ind\!\left[\,\Move(i, d) = j\,\right]
+\llbracket \,\Move(i, d) = j\,\rrbracket
 \]
 where $\Move(i, d)$ returns the target cell of move $d$ from $i$, clipped
 back to $i$ if the target is out of bounds.
@@ -296,7 +310,7 @@ p(\bd_t \given X_t = x^\star)
    \cdot \overbrace{\prod_{i \neq x^\star} p_c^{d_t^{(i)}} (1{-}p_c)^{1-d_t^{(i)}}}^{ \circled{1}{-0.5pt}{0.7} } \\
 \end{equation*}
 
-Where $\circled{1}{-0.5pt}{0.7}$ is expanded to the following to enable removal of terms independent of $x^\star$:
+Where $\circled{1}{-0.5pt}{0.7}$ is expanded to the following to remove terms independent of $x^\star$:
 \[
 \frac{\prod_{i =0}^{G-1} p_c^{d_t^{(i)}} (1{-}p_c)^{1-d_t^{(i)}}}{p_c^{d_t^{(x^\star)}} (1{-}p_c)^{1-d_t^{(x^\star)}}}
 \]
@@ -331,14 +345,13 @@ representation.
 
 \subsection{Cluster graph and inference algorithm}
 
-The factor list (one prior, $T$ transition factors, $T{+}1$ collapsed
-observation factors) is handed to \texttt{emdw}'s \texttt{ClusterGraph}
+The factor list is passed to \texttt{emdw}'s \texttt{ClusterGraph}
 constructor with either the \texttt{LTRIP}, \texttt{BETHE} or \texttt{JTREE} construction
-tag. For the chain-structured factor graph induced by this model, a non-loopy
+tag. For the chain-structured factor graph in this model, a non-loopy
 cluster graph is constructed, so sum-product belief propagation
 is exact and converges after one forward and one backward sweep.
 \texttt{loopyBP\_CG} on this tree-structured CG behaves as standard
-forward--backward. \\[10pt]
+forward-backward. \\[10pt]
 Sum-product marginal inference was chosen over MAP for two
 reasons:\\
 \begin{itemize}
@@ -346,7 +359,7 @@ reasons:\\
 \bd_{0:T})$ (i.e. the posterior given all the time steps, not just the preceding ones)
  is the obvious output for visualisation and for any further
 purpose of this algorithm. For example, any function that would need to know
-where the wumpus is would also probably like to know how likely
+where the wumpus is would also probably need to know how likely
 the wumpus is to be there. Saying that the wumpus is in square 1 if it's only slightly less likely to be in square 2
  would be mispresenting vital information for any real world application of hunting wumpi (or wumpuses)
 
@@ -365,13 +378,14 @@ each E-step). The alternative of placing Beta priors on $p_w, p_c$ and performin
 Bayesian inference would have been possible but was not implemented because it would
 have caused loopy (and thus non-exact) inference due to the parameters being shared parents of all the observation factors.
 
-The E-step rebuilds the observation factors $\phi_t$ under the current
-parameters and runs BP to give the smoothed marginals
-$\gamma_t^{(k)}(x) = p(X_t = x \given \bd_{0:T}, \theta^{(k)})$. The M-step
-has a closed-form solution: with $A_t = \sum_x \gamma_t^{(k)}(x)\,
-d_t^{(x)}$ (the expected detection at the wumpus cell at time $t$) and
-$D_t = \sum_i d_t^{(i)}$ (the total detection count at time $t$), the
-updates are
+The M-step is a Bernoulli MLE similar in structure to the
+Gaussian-mixture derivation in Week~10 of the class
+notes~\cite[Week~10]{dupreez2026de424}. With
+$A_t = \sum_x \gamma_t^{(k)}(x)\, d_t^{(x)}$ (the expected
+detection at the wumpus cell at time $t$) and
+$D_t = \sum_i d_t^{(i)}$ (the total detection count at time $t$),
+the closed-form updates are
+
 
 \begin{equation*}
 p_w^{(k+1)} = \frac{\sum_t A_t}{T+1},
@@ -383,7 +397,7 @@ p_c^{(k+1)} = \frac{\sum_t (D_t - A_t)}{(T+1)(G-1)}.
 \noindent The algorithm alternates between E and M until
 both of the parameters change by less than $10^{-6}$ per iteration or $50$ iterations are reached. Parameter estimates are clamped to
 $[10^{-6},\, 1{-}10^{-6}]$ to avoid singular observation factors at boundary
-values.\colorbox{red!100}{\ref{123}} EM is initialised at $(p_w^{(0)}, p_c^{(0)}) = (0.9, 0.1)$; 
+values.EM is initialised at $(p_w^{(0)}, p_c^{(0)}) = (0.9, 0.1)$.
 
 \subsection{Scope of solution}
 \label{sec:scope}
@@ -396,7 +410,7 @@ Choosing to focus on these datasets allowed for thorough analysis of datasets 1-
 \section{Implementation}
 \label{sec:impl}
 
-The implementation comprises two main programs and a shared helper library:
+The implementation consists of two main programs and a shared helper library:
 \begin{itemize}
 \item \texttt{miniproject.cc}: datasets 1--2 (known parameters)
 \item \texttt{miniproject\_q3.cc}: dataset 3 (EM-based parameter learning)
@@ -405,16 +419,19 @@ truth, marginals, and trajectories
 \end{itemize}
 Both main programs share the same skeleton: load detections, build
 factors, construct cluster graph, run BP, extract per-time-step marginals,
-write results to disk, but with the EM variant wrapping factor build, CG
+output results, but with the EM variant wrapping factor build, CG
 construction, BP, and marginal extraction in an outer loop implementing the
 M-step of Section~\ref{sec:em}. Each program takes the dataset directory,
 output directory, initial $(p_w, p_c)$, and an optional cluster-graph type
-(\texttt{LTRIP}, \texttt{JTREE} or \texttt{BETHE}) on the command line.
+(\texttt{LTRIP}, \texttt{JTREE} or \texttt{BETHE}) on the command line. The code was
+written with close reference to \cite{emdw_userguide}, and with reference to an LLM generated user guide 
+that had full context from the emdw library files and guided me on proper C++ syntax and usage for emdw-specific
+cases.
 
 \subsection{Variable identifiers and shared cell domain}
 
 Each $X_t$ is assigned a sequential integer identifier, and all $X_t$ share
-a single length-$G$ cell domain instantiated once:
+a single length-$G$ cell domain created once:
 
 \begin{cppd}
 vector<RVIdType> X(lastT + 1);
@@ -443,16 +460,19 @@ source cell by \texttt{clipMove}, which automatically generates the
 corner/edge self-loop mass:
 
 \begin{cppd}
-auto clipMove = [W, H, &cellOf](int row, int col, int drow, int dcol) {
-  int nr = row + drow, nc = col + dcol;
-  if (nr < 0 || nr >= H) nr = row;
-  if (nc < 0 || nc >= W) nc = col;
-  return cellOf(nr, nc);
-};
+auto clipMove =
+    [W, H, &cellOf](int row, int col, int drow, int dcol) {
+      int nr = row + drow;
+      int nc = col + dcol;
+      if (nr < 0 || nr >= H) nr = row;
+      if (nc < 0 || nc >= W) nc = col;
+      return cellOf(nr, nc);
+    };
 
 map<vector<T>, FProb> transProbs;
 for (int i = 0; i < G; ++i) {
-  const int r = rowOf(i), c = colOf(i);
+  const int r = rowOf(i);
+  const int c = colOf(i);
   for (int d = 0; d < 4; ++d) {
     const int j = clipMove(r, c, directions[d][0], directions[d][1]);
     transProbs[{T(i), T(j)}].prob += 0.25;
@@ -472,12 +492,15 @@ const double phiOn  = cfg.pw / cfg.pc;
 const double phiOff = (1.0 - cfg.pw) / (1.0 - cfg.pc);
 
 for (int t = 0; t <= lastT; ++t) {
+  const Grid& det = detections[t];
   map<vector<T>, FProb> phiProbs;
-  for (int row = 0; row < H; ++row)
+  for (int row = 0; row < H; ++row) {
     for (int col = 0; col < W; ++col) {
       const int j = cellOf(row, col);
-      phiProbs[{T(j)}] = (detections[t][row][col] == 1) ? phiOn : phiOff;
+      const int d = det[row][col];
+      phiProbs[{T(j)}] = (d == 1) ? phiOn : phiOff;
     }
+  }
   rcptr<Factor> phi = uniqptr<DT>(new DT(
       {X[t]}, {cellDom}, defProb, phiProbs));
   factors.push_back(phi);
@@ -508,11 +531,13 @@ For each $t$ the marginal $\gamma_t$ is obtained by querying the
 cluster graph for the posterior over $X_t$ and reducing for each cell value:
 
 \begin{cppd}
-rcptr<Factor> q = queryLBP_CG(cg, msgs, {X[t]})->normalize();
-for (int j = 0; j < G; ++j) {
-  rcptr<Factor> reduced = q->observeAndReduce({X[t]}, {T(j)});
-  gammas[t][j] = reduced->potentialAt(
-      emdw::RVIds{}, emdw::RVVals{}, true);
+for (int t = 0; t <= lastT; ++t) {
+  rcptr<Factor> q = queryLBP_CG(*cgPtr, msgs, {X[t]})->normalize();
+  for (int j = 0; j < G; ++j) {
+    rcptr<Factor> reduced = q->observeAndReduce({X[t]}, {T(j)});
+    gammas[t][j] = reduced->potentialAt(
+        emdw::RVIds{}, emdw::RVVals{}, true);
+  }
 }
 \end{cppd}
 
@@ -549,20 +574,20 @@ file in the ground-truth coordinate format $(x, y) = (\text{col},
 \section{Results and analysis}
 \label{sec:results}
 
-\subsection{Evaluation methodology}
+\subsection{Evaluation metrics}
 
 The inferred trajectory is evaluated against the provided ground truth using:
 \begin{itemize}
 \item \textbf{Per-step accuracy}: the fraction of time steps for which
 $\argmax_x \gamma_t(x)$ equals the ground-truth cell.
-\item \textbf{Mean $l_2$ cell distance}: average Euclidean distance
+\item \textbf{Mean cell distance}: average Euclidean distance
 (in cells) between the inferred argmax cell and the ground-truth cell
 across time steps.
 \item \textbf{Top-k accuracy}: the fraction of time steps for which the
 ground-truth cell lies in the $k$ most probable cells under $\gamma_t$,
 reported for $k = 1, 3, 5$.
 \end{itemize}
-Qualitative evaluation uses posterior heatmaps for representative time
+The evaluation uses posterior heatmaps for representative time
 steps with the ground-truth cell overlaid.
 
 \subsection{Dataset 1 (5\,$\times$\,5, $p_w{=}0.95$, $p_c{=}0.05$)}
@@ -602,7 +627,7 @@ due to the noisy observations being in places that the wumpus could conceivably 
 After frame 4, the observations were more informative and the posterior certainty increased, however the argmax was still incorrect for time step 6, 
 where the wumpus could have moved to 2 different positions with almost equal probability.
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.95\textwidth]{images/dataset3_first6.png}
 \caption{Posterior heatmaps for dataset 3 at the first 6 time steps;
@@ -639,61 +664,28 @@ EM converged after 9 iterations to $(\hat p_w, \hat p_c) = (0.815,
 \subsection{Cluster-graph choice}
 
 Comparing the \texttt{LTRIP}, \texttt{BETHE} and \texttt{JTREE} inference on dataset 3,
-over many iterations, the mean time for \texttt{LTRIP} was lowest at 0.5s, with \texttt{JTREE} at 0.55s and \texttt{BETHE} at
-0.65, all with negligible difference in time variance. In a situation where inference about the current position of the wumpus
+over 25 iterations, the mean time for \texttt{LTRIP} was lowest at 0.5s, with \texttt{JTREE} at 0.55s and \texttt{BETHE} at
+0.65s, all with negligible difference in time variance. In a situation where inference about the current position of the wumpus
 is necessary as fast as possible, and there is a significant amount of data, \texttt{LTRIP} would be the best choice. 
 If the wumpus is doing what it was originally designed for by Gregory Yob (being hunted),
-faster inference of the wumpus would be more exact, because the wumpus is running away, and thus changing it's position, as it's position is being
+faster inference of the wumpus would be more accurate, because the wumpus is running away (and thus changing its position) as its position is being
 inferred. 
 
 
 %=========================================================
 \section{Conclusion}
 
-[FILL IN: brief summary paragraph. Suggested points to include:
-scope (datasets 1--3); key design decisions (HMM Bayes net structure,
-factor-graph collapse of detection RVs into per-step unary factors,
-point-estimate EM for unknown parameters, exact sum-product BP on a chain
-cluster graph); brief acknowledgement of the un-tackled extensions to
-occupied cells in datasets 4--5 with an indication of the natural extension
-path (loopy BP over binary map RVs vs alternating EM treating the map as a
-parameter).]
-
 The HMM-Bayes net approach was successful in inferring the wumpus position accurately most of the time, and where
-it was incorrect it was incorrect but unsure of it's correctness. The EM algorithm was able to learn the parameters
-for dataset 3, however the accuracy was worse than datasets 1 and 2, which is a result that would require further investigation.
+it was incorrect it was incorrect but unsure of its correctness. The EM algorithm was able to learn the parameters
+for dataset 3, however the accuracy was worse than datasets 1 and 2, which is a result that would require further investigation to fix.
 The cluster graph choice did not have a significant effect on the results, however \texttt{LTRIP} was slightly faster than
-\texttt{JTREE} and \texttt{BETHE}.
+\texttt{JTREE} and \texttt{BETHE}. An interesting observation is that the accuracy of inference using miniproject.cc with dataset 4, 
+and miniproject\_q3.cc with dataset 5 resulted in accuracies of 89\% and 84.5\% respectively. This, while not achieving the occupied cell
+learning, shows that in a real world situation where the wumpus is being tracked, learning the occupied cells would be more accurate, but using
+these simpler models might be a worthwhile trade-off in the time-sensitive application.
 
 %=========================================================
-\begin{thebibliography}{9}
-
-\bibitem{barber2012bayesian}
-D.~Barber, \emph{Bayesian Reasoning and Machine Learning}.
-Cambridge University Press, 2012.
-
-\bibitem{russell2022ai}
-S.~Russell and P.~Norvig, \emph{Artificial Intelligence: A Modern Approach},
-4th~ed.\ Prentice Hall, 2022.
-
-\bibitem{koen2017rhino}
-H.~Koen, H.~Roodt, and A.~De~Waal, ``An expert-driven causal model of the
-rhino poaching problem,''
-\emph{Ecological Modelling}, vol.~347, pp.~29--39, 2017.
-
-\bibitem{luo2008em}
-Y.~Luo, ``Basics of the EM algorithm,''
-Scribe notes for COS~424: Interacting with Data (Lecturer: D.~Blei),
-Lecture~11, Princeton University, Mar.~11, 2008. [Online]. Available:
-\url{https://www.cs.princeton.edu/courses/archive/spr08/cos424/scribe_notes/0311.pdf}
-
-
-
-% Add any further references you actually consulted, e.g.:
-% \bibitem{koller2009pgm}
-% D.~Koller and N.~Friedman, \emph{Probabilistic Graphical Models:
-% Principles and Techniques}. MIT Press, 2009.
-
-\end{thebibliography}
+\bibliographystyle{IEEEtran}
+\bibliography{references}
 
 \end{document}
